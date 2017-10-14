@@ -5,10 +5,38 @@ const db = pgp("postgres://rviygylevbdzxb:e39cc062f951d77ec147892abaeeed3096bc6b
 /* GET home page. */
 router.post('/init', function(req, res, next) {
   db.any("SELECT * FROM portfolios WHERE userid=${user};",{user:req.body.userId})
-      .then(room => {
-        console.log(room);
-        if(room.length==0) {
+      .then(user => {
+        console.log(user);
+        if(user.length==0) {
           db.none("INSERT INTO portfolios VALUES (${user},${port});",{user:req.body.userId,port:{}});
+        }
+        res.json({error:1});
+    })
+      .catch(error => {
+        console.log(error);
+        res.json({error:2});
+    });
+});
+router.post('/addStocks', function(req, res, next) {
+  db.one("SELECT * FROM portfolios WHERE userid=${user};",{user:req.body.userId})
+      .then(user => {
+        console.log(user);
+        if(user.length==0) {
+          db.none("INSERT INTO portfolios VALUES (${user},${port});",{user:req.body.userId,port:{req.body.ticker:req.body.num}});
+        }
+        else {
+            var port = user[0].portfolio;
+            console.log(port);
+            var stocks = Object.keys(port);
+            if(stocks.indexOf(req.body.ticker)!=-1) {
+                port.ticker+=req.body.num;
+            }
+            else {
+                port.ticker = req.body.num;
+            }
+            db.none("UPDATE portfolios SET portfolio=${portf} WHERE userid=${user};",{user:req.body.userId,portf:port});
+        }
+        else {
         }
         res.json({error:1});
     })
