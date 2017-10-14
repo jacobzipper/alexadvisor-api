@@ -8,7 +8,7 @@ router.post('/init', function(req, res, next) {
       .then(room => {
         console.log(room);
         if(room.length==0) {
-          db.none("INSERT INTO portfolios VALUES (${user},${port});",{user:request.userId,port:{}});
+          db.none("INSERT INTO portfolios VALUES (${user},${port});",{user:req.body.userId,port:{}});
         }
         res.json({error:1});
     })
