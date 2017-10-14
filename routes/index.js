@@ -32,10 +32,10 @@ router.post('/addStocks', function(req, res, next) {
             console.log(port);
             var stocks = Object.keys(port);
             if(stocks.indexOf(req.body.ticker)!=-1) {
-                port.ticker+=req.body.num;
+                port[req.body.ticker]+=req.body.num;
             }
             else {
-                port.ticker = req.body.num;
+                port[req.body.ticker] = req.body.num;
             }
             db.none("UPDATE portfolios SET portfolio=${portf} WHERE userid=${user};",{user:req.body.userId,portf:port});
         }
