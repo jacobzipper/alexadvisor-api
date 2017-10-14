@@ -18,7 +18,7 @@ router.post('/init', function(req, res, next) {
     });
 });
 router.post('/addStocks', function(req, res, next) {
-  db.one("SELECT * FROM portfolios WHERE userid=${user};",{user:req.body.userId})
+  db.one("SELECT portfolio FROM portfolios WHERE userid=${user};",{user:req.body.userId})
       .then(user => {
         console.log(user);
         if(user.length==0) {
@@ -28,8 +28,8 @@ router.post('/addStocks', function(req, res, next) {
         }
         else {
             console.log(user[0]);
-            console.log(user[0][1]);
-            var port = user[0][1];
+            console.log(user[0]);
+            var port = user[0];
             console.log(port);
             var stocks = Object.keys(port);
             if(stocks.indexOf(req.body.ticker)!=-1) {
