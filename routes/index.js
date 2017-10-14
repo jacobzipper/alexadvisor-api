@@ -73,4 +73,19 @@ router.post('/subStocks', function(req, res, next) {
     });
 });
 
+router.post('/getStocks', function(req, res, next) {
+  db.one("SELECT portfolio FROM portfolios WHERE userid=${user};",{user:req.body.userId})
+      .then(user => {
+        console.log(user);
+        if(user.length!=0) {
+            res.json({port:user["portfolio"]});
+        }
+        res.json({error:1});
+    })
+      .catch(error => {
+        console.log(error);
+        res.json({error:2});
+    });
+});
+
 module.exports = router;
