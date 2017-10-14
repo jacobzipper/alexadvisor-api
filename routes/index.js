@@ -10,9 +10,11 @@ router.post('/init', function(req, res, next) {
         if(room.length==0) {
           db.none("INSERT INTO portfolios VALUES (${user},${port});",{user:request.userId,port:{}});
         }
+        res.json({error:1});
     })
       .catch(error => {
         console.log(error);
+        res.json({error:2});
     });
 });
 
