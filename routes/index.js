@@ -27,9 +27,8 @@ router.post('/addStocks', function(req, res, next) {
           db.none("INSERT INTO portfolios VALUES (${user},${port});",{user:req.body.userId,port:objtemp});
         }
         else {
-            console.log(user[0]);
-            console.log(user[0]);
-            var port = user[0];
+            console.log(user["portfolio"]);
+            var port = user["portfolio"];
             console.log(port);
             var stocks = Object.keys(port);
             if(stocks.indexOf(req.body.ticker)!=-1) {
