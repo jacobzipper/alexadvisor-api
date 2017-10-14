@@ -28,7 +28,6 @@ router.post('/addStocks', function(req, res, next) {
         }
         else {
             console.log(user[0]);
-            console.log(user.anonymous.portfolio);
             var port = user[0].anonymous.portfolio;
             console.log(port);
             var stocks = Object.keys(port);
