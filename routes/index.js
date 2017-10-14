@@ -7,7 +7,7 @@ router.post('/init', function(req, res, next) {
   db.oneOrNone("SELECT * FROM portfolios WHERE userid=${user};",{user:req.body.userId})
       .then(user => {
         console.log(user);
-        if(user.length==0) {
+        if(user==null) {
           db.none("INSERT INTO portfolios VALUES (${user},${port});",{user:req.body.userId,port:{}});
           res.json({port:{}});
         }
