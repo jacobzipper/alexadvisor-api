@@ -4,13 +4,16 @@ const pgp = require('pg-promise')();
 const db = pgp("postgres://rviygylevbdzxb:e39cc062f951d77ec147892abaeeed3096bc6b037747e3155fdc5640696201c9@ec2-23-23-221-255.compute-1.amazonaws.com:5432/dev109plbu13s8");
 /* GET home page. */
 router.post('/init', function(req, res, next) {
-  db.any("SELECT * FROM portfolios WHERE userid=${user};",{user:req.body.userId})
+  db.one("SELECT * FROM portfolios WHERE userid=${user};",{user:req.body.userId})
       .then(user => {
         console.log(user);
         if(user.length==0) {
           db.none("INSERT INTO portfolios VALUES (${user},${port});",{user:req.body.userId,port:{}});
+          res.json({port:{}});
         }
-        res.json({error:1});
+        else {
+            res.json({port:user["portfolio"]});
+        }
     })
       .catch(error => {
         console.log(error);
@@ -74,6 +77,21 @@ router.post('/subStocks', function(req, res, next) {
 });
 
 router.post('/getStocks', function(req, res, next) {
+  db.one("SELECT portfolio FROM portfolios WHERE userid=${user};",{user:req.body.userId})
+      .then(user => {
+        console.log(user);
+        if(user.length!=0) {
+            res.json({port:user["portfolio"]});
+        }
+        res.json({error:1});
+    })
+      .catch(error => {
+        console.log(error);
+        res.json({error:2});
+    });
+});
+
+router.post('/getInfo', function(req, res, next) {
   db.one("SELECT portfolio FROM portfolios WHERE userid=${user};",{user:req.body.userId})
       .then(user => {
         console.log(user);
