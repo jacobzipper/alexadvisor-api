@@ -28,8 +28,8 @@ router.post('/addStocks', function(req, res, next) {
         }
         else {
             console.log(user[0]);
-            console.log(user[0]["portfolio"]);
-            var port = user[0]["portfolio"];
+            console.log(user[0][1]);
+            var port = user[0][1];
             console.log(port);
             var stocks = Object.keys(port);
             if(stocks.indexOf(req.body.ticker)!=-1) {
