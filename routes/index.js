@@ -59,6 +59,9 @@ router.post('/subStocks', function(req, res, next) {
             if(stocks.indexOf(req.body.ticker)!=-1) {
                 port[req.body.ticker]-=req.body.num;
                 port[req.body.ticker] = port[req.body.ticker] > 0 ? port[req.body.ticker] : 0;
+                if (port[req.body.ticker] == 0) {
+                    delete port[req.body.ticker];
+                }
             }
             db.none("UPDATE portfolios SET portfolio=${portf} WHERE userid=${user};",{user:req.body.userId,portf:port});
         }
