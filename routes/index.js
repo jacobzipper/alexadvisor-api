@@ -4,7 +4,7 @@ const pgp = require('pg-promise')();
 const db = pgp("postgres://rviygylevbdzxb:e39cc062f951d77ec147892abaeeed3096bc6b037747e3155fdc5640696201c9@ec2-23-23-221-255.compute-1.amazonaws.com:5432/dev109plbu13s8");
 /* GET home page. */
 router.post('/init', function(req, res, next) {
-  db.one("SELECT * FROM portfolios WHERE userid=${user};",{user:req.body.userId})
+  db.oneOrNone("SELECT * FROM portfolios WHERE userid=${user};",{user:req.body.userId})
       .then(user => {
         console.log(user);
         if(user.length==0) {
