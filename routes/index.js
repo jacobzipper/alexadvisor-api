@@ -38,8 +38,6 @@ router.post('/addStocks', function(req, res, next) {
             }
             db.none("UPDATE portfolios SET portfolio=${portf} WHERE userid=${user};",{user:req.body.userId,portf:port});
         }
-        else {
-        }
         res.json({error:1});
     })
       .catch(error => {
